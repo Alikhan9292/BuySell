@@ -5,7 +5,10 @@ import com.example.buysell.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -13,8 +16,8 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/")
-    public String products(Model model) {
-        model.addAttribute("products", productService.listProducts());
+    public String products(@RequestParam(name = "title", required = false) String title, Model model) {
+        model.addAttribute("products", productService.listProducts(title));
         return "products";
     }
 
@@ -34,27 +37,5 @@ public class ProductController {
     public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return "redirect:/";
-    }
-
-    @GetMapping("/edit-product{id}")
-    public String editProductPage(@PathVariable Long id, Model model) {
-        Product product = productService.getProductById(id);
-        model.addAttribute("product", product);
-        return "edit-product";
-    }
-
-    @PostMapping("/product/update/{id}")
-    public String updateProduct(@PathVariable Long id, @ModelAttribute Product updatedProduct) {
-        productService.updateProduct(id, updatedProduct);
-        return "redirect:/";
-    }
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login";
-    }
-
-    @GetMapping("/register")
-    public String registerPage() {
-        return "register";
     }
 }
