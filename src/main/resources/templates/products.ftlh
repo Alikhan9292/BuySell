@@ -1,28 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Emptum</title>
+    <title>BUYSELL</title>
     <link rel="stylesheet" type="text/css" href="/styles.css">
 </head>
 <body>
-<h1>Emptum</h1><hr>
-<a href="/login" class="button">Войти</a>
-<a href="/register" class="button">Зарегистрироваться</a>
-<h4>Товары со всему Казахстану</h4>
+<h1>BUYSELL | <a href="/login">Войти</a></h1><hr>
+<h4>Товары со всего Казахстана!</h4>
+<form action="/" method="get">
+    Поиск по названию объявления: <input type="text" name="title"><br>
+    <input type="submit" value="Поиск"/>
+</form>
 <#list products as product>
     <div>
-        <p><b>${product.title}</b> ${product.price} руб. | <a href="/product/${product.id}">Подробнее...</a> | <a href="/edit-product${product.id}">Редактировать</a></p>
+        <p><b>${product.title}</b> ${product.price} тг. | <a href="/product/${product.id}">Подробнее...</a></p>
     </div>
+<#else>
+    <h3>Товаров нет</h3>
 </#list>
 <hr>
 <h3>Создать новый товар</h3>
-<form action="/product/create" method="post" class="form-container">
-    Название объявления: <input type="text" name="title" class="input-field"/><br><br>
-    Описание объявления: <input type="text" name="description" class="input-field"/><br><br>
-    Цена: <input type="number" name="price" class="input-field"/><br><br>
-    Город: <input type="text" name="city" class="input-field"/><br><br>
-    Имя: <input type="text" name="author" class="input-field"/><br><br>
-    <input type="submit" value="Добавить товар" class="submit-button"/>
+<form action="/product/create" method="post" enctype="multipart/form-data">
+    Название объявления: <input type="text" name="title"/><br><br>
+    Описание объявления: <input type="text" name="description"/><br><br>
+    Цена: <input type="number" name="price"/><br><br>
+    Город: <input type="text" name="city"/><br><br>
+    Имя: <input type="text" name="author"/><br><br>
+    Первая фотография: <input type="file" name="file1"/><br><br>
+    Вторая фотография: <input type="file" name="file2"/><br><br>
+    Третья фотография: <input type="file" name="file3"/><br><br>
+    <input type="hidden" name="_csrf" value="${_csrf.token}">
+    <input type="submit" value="Добавить товар"/>
 </form>
 </body>
 </html>
