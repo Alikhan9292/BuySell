@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>BUYSELL</title>
-    <link rel="stylesheet" type="text/css" href="/styles.css">
 </head>
 <body>
 <h1>BUYSELL</h1><hr>
