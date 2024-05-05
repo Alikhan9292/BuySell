@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,16 +34,22 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/user/edit/{user}")
-    public String userEdit(@PathVariable("user") User user, Model model) {
+    @GetMapping("/admin/user/edit/{userId}")
+    public String userEditForm(@PathVariable("userId") Long userId, Model model) {
+        User user = userService.findUserById(userId);
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
         return "user-edit";
     }
 
     @PostMapping("/admin/user/edit")
-    public String userEdit(@RequestParam("userId") User user, @RequestParam Map<String, String> form) {
-        userService.changeUserRoles(user, form);
+    public String userEdit(@RequestParam("userId") Long userId, @RequestParam Map<String, String> form) {
+        User user = userService.findUserById(userId);
+        Set<Role> newRoles = form.keySet().stream()
+                .filter(role -> "on".equals(form.get(role)))
+                .map(Role::valueOf)
+                .collect(Collectors.toSet());
+        userService.changeUserRoles(user, newRoles);
         return "redirect:/admin";
     }
 }

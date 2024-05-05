@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -25,15 +27,16 @@ public class Product {
     private String description;
     @Column(name = "price")
     private int price;
-    @Column(name = "city")
-    private String city;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-            mappedBy = "product")
+    @Column(name = "discount")
+    private Double discount;
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(name = "product_category", joinColumns = {
+            @JoinColumn(name = "product_id", referencedColumnName = "id")
+    }, inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")})
+    private Set<Category> categories = new HashSet<Category>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "product")
     private List<Image> images = new ArrayList<>();
-    private Long previewImageId;
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn
-    private User user;
     private LocalDateTime dateOfCreated;
 
     @PrePersist
@@ -41,8 +44,7 @@ public class Product {
         dateOfCreated = LocalDateTime.now();
     }
 
-
-    public void addImageToProduct(Image image) {
+    public void addImageToProduct(Image image){
         image.setProduct(this);
         images.add(image);
     }
