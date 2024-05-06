@@ -3,6 +3,6 @@ COPY target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "/app.jar"]
 
 
-#docker build -t product-market .
+#docker build -t buysell .
 #docker images
-#docker run -e spring.datasource.url='jdbc:mysql://host.docker.internal:3306/productMarket' -p 8081:8080 314496323af1
+#docker run -e spring.datasource.url='jdbc:mysql://host.docker.internal:3306/buysell' -p 8081:8080 e0703be851d2
