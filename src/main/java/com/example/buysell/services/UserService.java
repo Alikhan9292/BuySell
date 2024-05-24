@@ -35,7 +35,7 @@ UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         user.getRoles().clear();
-        user.getRoles().add(Role.ROLE_ADMIN);
+        user.getRoles().add(Role.ROLE_USER);
         log.info("Assigning admin role to new user with email: {}", email);
 
         userRepository.save(user);
